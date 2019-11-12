@@ -35,3 +35,25 @@ function animate() {
 	renderer.render(scene, camera);
 }
 animate();
+
+
+//Keyboard Input
+// movement - please calibrate these values
+var xSpeed = 0.1;
+var ySpeed = 0.1;
+
+document.addEventListener("keydown", onDocumentKeyDown, false);
+function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    if (keyCode == 87) {
+        cube.position.y += ySpeed;
+    } else if (keyCode == 83) {
+        cube.position.y -= ySpeed;
+    } else if (keyCode == 65) {
+        cube.position.x -= xSpeed;
+    } else if (keyCode == 68) {
+        cube.position.x += xSpeed;
+    } else if (keyCode == 32) {
+        cube.position.set(0, 0, 0);
+    }
+};
