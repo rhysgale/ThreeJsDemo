@@ -1,59 +1,89 @@
-﻿var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500); //FOV, ApectRatio, Near Clipping Plane, Far Clipping Plane
+﻿//==Scene==
+var renderer;
+var scene;
+var camera;
+//------------------
 
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight); //Width and Height of the window
-document.body.appendChild(renderer.domElement);
+var mainCube;
+var pressedKeys = [];
+var speed = .1;
 
-var geometry = new THREE.BoxGeometry(1, 1, 1);
-var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-var cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+function Startup() {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500); //FOV, ApectRatio, Near Clipping Plane, Far Clipping Plane
 
-camera.position.set(0, 0, 10);
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight); //Width and Height of the window
+    document.body.appendChild(renderer.domElement);
 
-var lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-var lineGeometry = new THREE.Geometry();
-lineGeometry.vertices.push(new THREE.Vector3(-10, 0, 0));
-lineGeometry.vertices.push(new THREE.Vector3(0, 10, 0));
-lineGeometry.vertices.push(new THREE.Vector3(10, 0, 0));
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    mainCube = new THREE.Mesh(geometry, material);
+    mainCube.position.set(0, -3, 0)
+    scene.add(mainCube);
 
-var line = new THREE.Line(lineGeometry, lineMaterial);
-scene.add(line);
+    camera.position.set(0, 0, 10);
+}
 
-// Create lights
-var light = new THREE.PointLight(0xEEEEEE);
-light.position.set(0, 0, -20);
-scene.add(light);
+//Update loop
+function Update() {
+    if (pressedKeys["A".charCodeAt(0)] && pressedKeys["A".charCodeAt(0)] === true) {
+        mainCube.position.x -= 1 * speed;
+    }
+    if (pressedKeys["D".charCodeAt(0)] && pressedKeys["D".charCodeAt(0)] === true) {
+        mainCube.position.x += 1 * speed;
+    }
+}
 
 function animate() {
-	requestAnimationFrame(animate);
-
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
-
-	renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+    Update();
+    renderer.render(scene, camera);
 }
+Startup();
 animate();
 
+window.addEventListener("keydown", function (e) {
+    pressedKeys[e.keyCode] = true;
+},
+    false);
 
-//Keyboard Input
-// movement - please calibrate these values
-var xSpeed = 0.1;
-var ySpeed = 0.1;
+window.addEventListener('keyup', function (e) {
+    pressedKeys[e.keyCode] = false;
+},
+    false);
 
-document.addEventListener("keydown", onDocumentKeyDown, false);
-function onDocumentKeyDown(event) {
-    var keyCode = event.which;
-    if (keyCode == 87) {
-        cube.position.y += ySpeed;
-    } else if (keyCode == 83) {
-        cube.position.y -= ySpeed;
-    } else if (keyCode == 65) {
-        cube.position.x -= xSpeed;
-    } else if (keyCode == 68) {
-        cube.position.x += xSpeed;
-    } else if (keyCode == 32) {
-        cube.position.set(0, 0, 0);
-    }
-};
+
+
+
+
+
+
+
+
+
+
+
+
+////INPUTS
+
+////Keyboard Input
+//// movement - please calibrate these values
+//var xSpeed = 0.1;
+//var ySpeed = 0.1;
+
+//document.addEventListener("keydown", onDocumentKeyDown, false);
+//function onDocumentKeyDown(event) {
+//    var keyCode = event.which;
+//    if (keyCode == 87) {
+//        cube.position.y += ySpeed;
+//    } else if (keyCode == 83) {
+//        cube.position.y -= ySpeed;
+//    } else if (keyCode == 65) {
+//        cube.position.x -= xSpeed;
+//    } else if (keyCode == 68) {
+//        cube.position.x += xSpeed;
+//    } else if (keyCode == 32) {
+//        cube.position.set(0, 0, 0);
+//    }
+//};
